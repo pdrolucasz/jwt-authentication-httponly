@@ -20,10 +20,10 @@ export class AuthGuard implements CanActivate {
 			// 💡 We're assigning the payload to the request object here
 			// so that we can access it in our route handlers
 			request["user"] = payload
-		} catch (error) {
-			if (error.name === "TokenExpiredError") {
-				return this.handleRefresh(request, response)
-			}
+		} catch {
+			// if (error.name === "TokenExpiredError") {
+			// 	return this.handleRefresh(request, response)
+			// }
 			throw new UnauthorizedException()
 		}
 		return true
@@ -42,9 +42,9 @@ export class AuthGuard implements CanActivate {
 					sub: payload.sub,
 					email: payload.email,
 				},
-				{ expiresIn: "10s" },
+				{ expiresIn: "5s" },
 			)
-			// const newRefreshToken = await this.jwtService.signAsync(payload, { expiresIn: "15m" })
+			// const newRefreshToken = await this.jwtService.signAsync(payload, { expiresIn: "20s" })
 
 			response.cookie("access_token", newAccessToken, {
 				path: "/",
